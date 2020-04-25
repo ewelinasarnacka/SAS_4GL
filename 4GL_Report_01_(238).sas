@@ -1,6 +1,6 @@
 
 /*Ewelina Cichocka*/
-/*2012-12-28*/
+/*2015-12-28*/
 
 options ls=150 pagesize=30;
 %let today = %sysfunc(date(),yymmdd10.);
@@ -13,22 +13,22 @@ set &table;
 run;
 %mend;
 
-%let nazwa_raportu=BINSIS-238;
+%let nazwa_raportu=RAPORT_01;
 %put &nazwa_raportu;
 
-%check_for_database(n=2,baza1=in03prd.policy, baza2=arc01prd.claim_request_data, nazwa_raportu=&nazwa_raportu);
-
 data daty;
-	 format date_start yymmdd10. date_end yymmdd10. date_last yymmdd10.;
-	 date_start = intnx('year',today(),-1,'begin');
-     date_end =intnx('day',today(),-1,'end');
-	 date_last = intnx('month',today(),0,'end');
+format date_start yymmdd10. date_end yymmdd10. date_last yymmdd10.;
+date_start = intnx('year',today(),-1,'begin');
+date_end =intnx('day',today(),-1,'end');
+date_last = intnx('month',today(),0,'end');
 run;
 
+sas
 proc sql print ;
 select distinct date_end into:date_end
 from daty;
 quit;
+
 %PUT &date_end;
 proc sql print ;
 select distinct year(date_end) as rok into:rok
@@ -339,7 +339,7 @@ FILENAME MyFile CLEAR ;
 /*define likwidator_t      /display 'Technical Handler'  style(column)={cellwidth=1.5in};*/
 /*define solve_way_desc    /display 'Solve Way'  style(column)={cellwidth=1.5in};*/
 /*define ufg               /display 'UFG'  style(column)={cellwidth=1.0in};*/
-/*define S_D			     /display 'S¹d'  style(column)={cellwidth=1.0in};*/
+/*define S_D			     /display 'SÂ¹d'  style(column)={cellwidth=1.0in};*/
 /*define LIKWIDACJA_BEZPO_REDNIA      /display 'BLS'  style(column)={cellwidth=1.0in};*/
 /*define registration_date_cr  /display 'Registration date*request'  style(column)={cellwidth=1.5in};*/
 /*define registration_month    /display 'Registration month*request'  style(column)={cellwidth=1.5in};*/
@@ -409,7 +409,7 @@ run;*/
 FILENAME MyFile CLEAR ;*/
 
 /***************************************************************************************************************************************************************************/
-/*WYS£ANIE NA EMAIL*/
+/*WYSÂ£ANIE NA EMAIL*/
 /***************************************************************************************************************************************************************************/
 
 x 'cd P:\DEP\Actuarial\05 REPORTS - OPERATIONAL\16 SAS - Macro';
@@ -455,8 +455,8 @@ filename mymail email (&odbiorca1. &odbiorca2.)
       cc = ("ZespolAnalizIRaportowania@proama.pl" "luiza.smargol@proama.pl");
 
 %let stopka1=" ";
-%let stopka2="Raport BINSIS-238 - Claims & Requests - wyst¹pi³ b³¹d podczas generowania raportu";
-%let stopka3="Skontaktuj siê z Zespo³em Analiz i Raportowania (ZespolAnalizIRaportowania@proama.pl)";
+%let stopka2="Raport BINSIS-238 - Claims & Requests - wystÂ¹piÂ³ bÂ³Â¹d podczas generowania raportu";
+%let stopka3="Skontaktuj siÃª z ZespoÂ³em Analiz i Raportowania (ZespolAnalizIRaportowania@proama.pl)";
 
 %email_tekst_MIS (&stopka1., &stopka2., &stopka3.);
 
@@ -483,7 +483,7 @@ filename mymail email (&odbiorca1. &odbiorca2.)
   attach = ("P:\DEP\actuarial\05 REPORTS - OPERATIONAL\04 Claims\BINSIS-238 - Daily Reports\RAPORTY\C3_BINSIS-238 - CLAIMS - Daily Report &date_end..zip");
 
 %let stopka1='Witam,';
-%let stopka2="W za³¹czeniu przesy³am Dzienny Raport Szkodowy, stan na &report_date..";
+%let stopka2="W zaÂ³Â¹czeniu przesyÂ³am Dzienny Raport Szkodowy, stan na &report_date..";
 %let stopka3=' ';
 
 %email_tekst_MIS (&stopka1., &stopka2., &stopka3.);
